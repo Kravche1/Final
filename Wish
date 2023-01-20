@@ -1,0 +1,392 @@
+19. Make and Makefile configuration file.
+We need the makefile to tell make what to do. Often a makefile tells make how to compile and link a program.
+Example Makefile:
+cc=gcc
+cflags=-c -Wall
+
+all: main
+
+main: main.o
+    $(cc) main.o -o main
+
+main.o: main.c
+    $(cc) $(cflags) main.c
+
+clean:
+    rm -rf *o main
+
+
+1.6
+#include <stdio.h>
+int main(){
+  printf("the value fo EOF is:", EOF);
+}
+
+1.7
+#include<stdio.h>
+
+int main(int argc, char *argv[]) {
+    int c;
+
+    while ((c = getchar()) != EOF) {
+        printf("%d ", c != EOF);
+        putchar(c);
+    }
+
+    printf("\n%d\n", c != EOF);
+
+}
+
+1.8
+#include<stdio.h>
+
+int main(){
+	int blank, tab, newline;
+
+	blank == 0;
+	tab == 0;
+	newline == 0;
+
+	int c;
+
+	printf("input text\n");
+
+	for (; (c == getchar()) != EOF; ){
+		if (c == ' '){
+		++blank;
+		}
+
+		if (c == '\t'){
+		++tab;
+		}
+
+		if (c == '\n'){
+		++newline;
+		}
+	}
+	printf("blank=%d, tab=%d, newline=%d\n", blank,tab,newline);
+}
+
+1.9
+#include<stdio.h>
+
+#define NONBLANK '-'
+
+int main(void)
+{
+	int c, last;
+
+	last = NONBLANK;
+
+	while((c = getchar()) != EOF)
+	{
+		if(c == ' ')
+		{
+			if(last != ' ')
+			putchar(c);
+		}
+		else
+		putchar(c);
+		last=c;
+		}
+	return 0;
+}
+
+1.10
+#include<stdio.h>
+
+int main(void)
+{
+  int c;
+
+  while((c = getchar()) != EOF)
+  {
+    if(c == '\t')
+    {
+      putchar('\\');
+      putchar('t');
+    }
+
+    if(c == '\b')
+    {
+      putchar('\\');
+      putchar('b');
+    }
+
+    if(c == '\\')
+    {
+      putchar('\\');
+      putchar('\\');
+    }
+
+    if(c != '\t' && c != '\b' && c != '\\')
+      putchar(c);
+  }
+  return 0;
+}
+
+1.12
+
+#include <stdio.h>
+
+#define CTRL(x) (x & 0x1f)
+
+int main()
+{
+  int c;
+
+  while((c = getchar()) != EOF && c != CTRL('d') )
+  {
+    if(c == ' ' || c == '\t' || c == '\n' || c == '-')
+    {
+      putchar('\n');
+
+      while((c = getchar()) == ' ' || c == '\t' || c == '\n' || c == '-' )
+      {
+        ; //do nothing // we could actually skip the braces and just enter ; after closing the while's condition brackets
+      }
+    }
+    putchar(c);
+  }
+}
+
+1.16 Revise the main routine of the longest-line program so it will
+correctly print the length of arbitrarily long input lines, and as much as possible
+of the text.
+
+#include <stdio.h>
+
+/* The size of the output that we would like */
+#define MAX 1000
+
+/* define our functions*/
+int getNewLine(char line[], int max);
+void copy(char to[], char from[]);
+
+int main(){
+
+  int len, max;
+  char line[MAX];
+  char longest[MAX];
+
+  max = 0;
+  while((len = getNewLine(line, MAX)) > 0){
+
+    if(len > max){
+      max = len;
+      copy(longest, line);
+    }
+  }
+ 
+  if (max > 0){
+    printf("length = %i, string=%s", max, longest);
+    }
+  return 0;
+}
+
+/* get a line in a character array */
+int getNewLine(char arr[], int lim){
+  int c, i;
+  for(i=0; i < lim -1 && (c=getchar()) != EOF && c != '\n'; ++i){
+    arr[i] = c;
+  }
+  if(c == '\n'){
+    arr[i] = c;
+    ++i;
+  }
+  else{
+    /* Continue to count the length even if it is longer than the max */
+    while((c=getchar()!=EOF) && c != '\n'){
+      ++i;      
+    }
+    if(c == '\n'){
+      arr[i] = c;
+      ++i;    
+    }
+  }
+  arr[i] = '\0';
+  return i;
+
+/* copy one character array to another */
+void copy(char to[], char from[]){
+  int i;
+  i = 0;
+  while((to[i] = from[i]) != '\0'){
+    ++i;
+      }
+}
+
+1.17 Exercise 1.17 -  Program to print the length of all input lines greater
+ * than 80 characters.
+
+#include<stdio.h>
+
+#define MAXLINE 1000
+#define LIMIT 80
+/***
+ *
+ * We call it ngetline, for new getline so that it does not conflict with
+ * system function getline
+ *
+ ***/
+
+int ngetline(char line[], int lim);
+
+int main(void)
+{
+  int len;
+  char line[MAXLINE];
+
+  while((len = ngetline(line,MAXLINE)) > 0)
+  {
+    if( len > LIMIT )
+      printf("%s",line);
+  }
+
+  return 0;
+}
+
+int ngetline(char s[], int lim)
+{
+  int i, c;
+  
+  for(i = 0; i < lim-1 && ( c = getchar() )!= EOF && c!='\n'; ++i)
+    s[i] = c;
+
+  if(c == '\n')
+  {
+    s[i] = c;
+    ++i;
+  }
+    s[i] = '\0';
+  return i;
+}
+
+1.18 - Write a Program to remove the trailing blanks and tabs
+ from each input line and to delete entirely blank lines
+
+
+#include<stdio.h>
+
+#define MAXLINE 1000
+
+int mgetline(char line[],int lim);
+int removetrail(char rline[]);
+
+int main(void)
+{
+  int len;
+  char line[MAXLINE];
+  
+  while((len=mgetline(line,MAXLINE))>0)
+    if(removetrail(line) > 0)
+      printf("%s",line);
+
+  return 0;
+}
+
+
+int mgetline(char s[],int lim)
+{
+  int i,c;
+
+  for(i=0;i<lim-1 && (c=getchar())!=EOF && c!='\n';++i)
+    s[i] = c;
+  if( c == '\n')
+  {
+    s[i]=c;
+    ++i;
+  }
+  s[i]='\0';
+  
+  return i;
+}
+
+/* To remove Trailing Blanks,tabs. Go to End and proceed backwards removing */
+
+int removetrail(char s[])
+{
+  int i;
+
+  for(i=0; s[i]!='\n'; ++i)
+    ;
+  --i;  /* To consider raw line without \n */
+
+  for(i >0; ((s[i] == ' ') || (s[i] =='\t'));--i)   
+    ; /* Removing the Trailing Blanks and Tab Spaces */
+
+  if( i >= 0) /* Non Empty Line */
+  {
+    ++i;
+    s[i] = '\n';
+    ++i;
+    s[i] = '\0';
+  }
+  return i;
+}
+
+1.19 - Write a function reverse that reverses the character string s; use it to write a program that reverses its input a line at a time.
+ 
+
+#include<stdio.h>
+#define MAXLINE 1000
+
+int mgetline(char line[], int lim);
+
+void reverse(char rline[]);
+
+
+int main(void)
+{
+  int len;
+  char line[MAXLINE];
+
+  while((len = mgetline(line, MAXLINE)) > 0 )
+  {
+    reverse(line);
+    printf("%s",line);
+  }
+
+  return 0;
+}
+
+int mgetline(char s[],int lim)
+{
+  int i,c;
+  
+  for(i=0; i<lim-1 && (c=getchar()) != EOF && c != '\n'; ++i)
+    s[i] = c;
+
+  if( c == '\n')
+  {
+    s[i] = c;
+    ++i;
+  }
+  s[i] = '\0';
+
+  return i;
+}
+
+
+void reverse(char rline[])
+{
+  int i,j;
+  char temp;
+
+  for(i=0;rline[i]!='\0';++i)
+    ;
+  --i;
+  if(rline[i]=='\n') --i;
+
+  j = 0;
+
+  while(j < i)
+  {
+    temp = rline[j];
+    rline[j] = rline[i];
+    rline[i] = temp;
+    --i;
+    ++j;
+  }
+}
+
