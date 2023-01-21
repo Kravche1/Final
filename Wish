@@ -150,6 +150,28 @@ int main()
   }
 }
 
+int my_getchar()
+{
+	int c; 
+	
+	if((c = getchar()) == EOF)
+	{	
+		if(ferror(stdin))
+		{
+			perror("Error indicator is set");
+			exit(1);
+		}
+		if(feof(stdin))
+		{
+			perror("End-of-file indicator is set");
+			exit(3);
+		}
+		perror("getchar returned EOF when error indicator and end-of-file indicator ARE NOT SET");
+		exit(2);
+	}
+	return c;
+}
+
 1.16 Revise the main routine of the longest-line program so it will
 correctly print the length of arbitrarily long input lines, and as much as possible
 of the text.
@@ -216,6 +238,34 @@ void copy(char to[], char from[]){
       }
 }
 
+int my_getchar(char* longest,int max)
+{
+	int c,r; 
+	
+	if((c = getchar()) == EOF)
+	{
+		if((r=printf("length = %d string = %s",max,longest))<0){
+			perror("Printf Error");
+			exit(4);
+		}
+		
+		if(ferror(stdin))
+		{
+			perror("Error indicator is set");
+			exit(1);
+		}
+		if(feof(stdin))
+		{
+			perror("End-of-file indicator is set");
+			exit(3);
+		}
+		perror("getchar returned EOF when error indicator and end-of-file indicator ARE NOT SET");
+		exit(2);
+	}
+	return c;
+}
+
+
 1.17 Exercise 1.17 -  Program to print the length of all input lines greater
  * than 80 characters.
 
@@ -260,6 +310,28 @@ int ngetline(char s[], int lim)
   }
     s[i] = '\0';
   return i;
+}
+
+int my_getchar()
+{
+	int c; 
+	
+	if((c = getchar()) == EOF)
+	{	
+		if(ferror(stdin))
+		{
+			perror("Error indicator is set");
+			exit(1);
+		}
+		if(feof(stdin))
+		{
+			perror("End-of-file indicator is set");
+			exit(3);
+		}
+		perror("getchar returned EOF when error indicator and end-of-file indicator ARE NOT SET");
+		exit(2);
+	}
+	return c;
 }
 
 1.18 - Write a Program to remove the trailing blanks and tabs
@@ -325,6 +397,28 @@ int removetrail(char s[])
   return i;
 }
 
+int my_getchar()
+{
+	int c; 
+	
+	if((c = getchar()) == EOF)
+	{	
+		if(ferror(stdin))
+		{
+			perror("Error indicator is set");
+			exit(1);
+		}
+		if(feof(stdin))
+		{
+			perror("End-of-file indicator is set");
+			exit(3);
+		}
+		perror("getchar returned EOF when error indicator and end-of-file indicator ARE NOT SET");
+		exit(2);
+	}
+	return c;
+}
+
 1.19 - Write a function reverse that reverses the character string s; use it to write a program that reverses its input a line at a time.
  
 
@@ -388,5 +482,142 @@ void reverse(char rline[])
     --i;
     ++j;
   }
+}
+
+int my_getchar()
+{
+	int c; 
+	
+	if((c = getchar()) == EOF)
+	{	
+		if(ferror(stdin))
+		{
+			perror("Error indicator is set");
+			exit(1);
+		}
+		if(feof(stdin))
+		{
+			perror("End-of-file indicator is set");
+			exit(3);
+		}
+		perror("getchar returned EOF when error indicator and end-of-file indicator ARE NOT SET");
+		exit(2);
+	}
+	return c;
+}
+
+
+--> Input_Output task
+
+#include <stdio.h>
+#include <stdlib.h>
+ 
+
+int my_getchar();
+int my_putchar(int c);
+
+int main( )
+{
+    int c;   
+    
+    
+    c=my_getchar();
+    
+    while (c != EOF)
+    {
+        my_putchar(c);
+        c = my_getchar();       
+        
+    }
+ 
+    return 0;
+}
+
+
+
+int my_getchar()
+{
+    int c;
+    
+    if((c = getchar()) == EOF)
+    {
+        if(ferror(stdin))
+        {
+            perror("error indicator is set");         
+        } 
+        if(feof(stdin))
+        {
+            perror("end-of-file indicator is set");
+        }
+        perror("getchar returned EOF when error indicator and end-of-file indicator ARE NOT SET");
+    }
+    
+    return c;
+}
+
+int my_putchar(int c)
+{
+    if(putchar(c) == EOF)
+    {
+        perror("putchar returned EOF");
+        if(ferror(stdout))
+        {
+            perror("error indicator is set");         
+        } 
+        else
+        {
+            perror("ERROR INDICATOR IS NOT SET");
+        }        
+    }
+    return c;
+    
+}
+
+--> World_Counting
+
+#include <stdio.h>
+
+#define IN 1  /* inside a word */
+#define OUT 0 /* outside a word */
+
+/* count lines, words, and characters in input */
+main()
+{
+   int c, nl, nw, nc, state;
+
+   state = out;
+   nl = nw = nc = 0;
+   while ((c = my_getchar()) != EOF) {
+       ++nc;
+       if (c == '\n')
+           ++nl;
+       if (c == ' ' || c == '\n' || c == '\t')
+           state = OUT;
+       else if (state == OUT) {
+           state = IN;
+           ++nw;
+       }
+   }
+    printf("%d %d %d\n", nl, nw, nc);
+}
+
+int my_getchar()
+{
+    int c;
+
+    if((c = getchar()) == EOF)
+    {
+        if(ferror(stdin))
+        {
+            perror("error indicator is set");
+        }
+        if(feof(stdin))
+        {
+            perror("end-of-file indicator is set");
+        }
+        perror("getchar returned EOF when error indicator and end-of-file indicator ARE NOT SET");
+    }
+
+    return c;
 }
 
