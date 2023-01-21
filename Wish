@@ -178,6 +178,7 @@ correctly print the length of arbitrarily long input lines, and as much as possi
 of the text.
 
 #include <stdio.h>
+#include <stdlib.h>
 
 /* The size of the output that we would like */
 #define MAX 1000
@@ -188,82 +189,80 @@ void copy(char to[], char from[]);
 
 int main(){
 
-  int len, max;
-  char line[MAX];
-  char longest[MAX];
+    int len, max;
+    char line[MAX];
+    char longest[MAX];
 
-  max = 0;
-  while((len = getNewLine(line, MAX)) > 0){
+    max = 0;
+    while((len = getNewLine(line, MAX)) > 0){
 
-    if(len > max){
-      max = len;
-      copy(longest, line);
+        if(len > max){
+            max = len;
+            copy(longest, line);
+        }
     }
-  }
  
-  if (max > 0){
-    printf("length = %i, string=%s", max, longest);
+    if (max > 0){
+        printf("length = %i, string=%s", max, longest);
     }
-  return 0;
+    return 0;
 }
 
 /* get a line in a character array */
 int getNewLine(char arr[], int lim){
-  int c, i;
-  for(i=0; i < lim -1 && (c=getchar()) != EOF && c != '\n'; ++i){
-    arr[i] = c;
-  }
-  if(c == '\n'){
-    arr[i] = c;
-    ++i;
-  }
-  else{
-    /* Continue to count the length even if it is longer than the max */
-    while((c=getchar()!=EOF) && c != '\n'){
-      ++i;      
+    int c, i;
+    for(i=0; i < lim -1 && (c=getchar()) != EOF && c != '\n'; ++i){
+        arr[i] = c;
     }
     if(c == '\n'){
-      arr[i] = c;
-      ++i;    
+        arr[i] = c;
+        ++i;
     }
-  }
-  arr[i] = '\0';
-  return i;
+    else{
+    /* Continue to count the length even if it is longer than the max */
+        while((c = getchar()) != EOF && c != '\n')
+            ++i;
+        
+        if(c == '\n'){
+            arr[i] = c;
+          ++i;    
+        }
+    }
+    arr[i] = '\0';
+    return i;
+}
 
 /* copy one character array to another */
 void copy(char to[], char from[]){
-  int i;
-  i = 0;
-  while((to[i] = from[i]) != '\0'){
-    ++i;
-      }
+    int i = 0;
+    while ((to[i] = from[i]) != '\0')
+        ++i;
 }
 
-int my_getchar(char* longest,int max)
-{
-	int c,r; 
-	
-	if((c = getchar()) == EOF)
-	{
-		if((r=printf("length = %d string = %s",max,longest))<0){
-			perror("Printf Error");
-			exit(4);
-		}
-		
-		if(ferror(stdin))
-		{
-			perror("Error indicator is set");
-			exit(1);
-		}
-		if(feof(stdin))
-		{
-			perror("End-of-file indicator is set");
-			exit(3);
-		}
-		perror("getchar returned EOF when error indicator and end-of-file indicator ARE NOT SET");
-		exit(2);
-	}
-	return c;
+
+
+int my_getchar(char* longest, int max){
+    int c,r; 
+    
+    if((c = getchar()) == EOF)
+    {
+        if((r=printf("length = %d string = %s",max,longest))<0){
+            perror("Printf Error");
+            exit(4);
+        }
+        
+        if(ferror(stdin)){
+            perror("Error indicator is set");
+            exit(1);
+        }
+        if(feof(stdin)){
+            perror("End-of-file indicator is set");
+            exit(3);
+        }
+        perror("getchar returned EOF when error indicator and end-of-file indicator ARE NOT SET");
+        exit(2);
+    }
+    return c;
 }
 
 
