@@ -621,3 +621,88 @@ int my_getchar()
     return c;
 }
 
+--> Longest Line
+
+#include <stdio.h>
+
+#define MAXLINE 1000 /* maximum input line size */
+
+int get_line(char line[], int maxline);
+void copy(char to[], char from[]);
+
+/* print longest input line */
+int main( )
+{
+    int len; /* current line length */
+    int max; /* maximum length seen so far */
+    char line[MAXLINE]; /* current input line */
+    char longest[MAXLINE]; /* longest line saved here */
+
+    max = 0;
+    while ((len = get_line(line, MAXLINE)) > 0)
+        if (len > max)
+        {
+            max = len;
+            copy(longest, line);
+        }
+    if (max> 0)  /* there was a line */
+        printf("\nlongest is:%s\n", longest);
+    return 0;
+}
+
+/*
+ * best case - copy gamoidzaxeba 1 xel, roca linebis klebadobit iqneba dalagebuli,
+ * anu pirvelive iqneba yvelaze grdeli
+ *
+ * worst case - copy gamoidzaxeba n-jer, roca gvaqvs n xazi, roca xazebi dalagebulia zrdadobis raodebonit
+ * anu yovel jerze gaaketebs shemowmebas da gamoidzaxebs copy-s.
+ *
+ * sashualod copy-s gamodzaxeba moxdeba (n+1)/2 jer.
+ */
+
+/* get_line: read a line into s, return length */
+int get_line(char s[], int lim)
+{
+    int c, i;
+
+    for (i=0; i<lim-1 && (c=getchar()) !=EOF && c!='\n'; ++i)
+        s[i] = c;
+    if (c == '\n')
+    {
+        s[i] = c;
+        ++i;
+    }
+    s[i] = '\0';
+    return i;
+}
+
+/* copy: copy 'from' into 'to'; assume to is big enough */
+void copy(char to[], char from[])
+{
+    int i = 0;
+    while ((to[i] = from[i]) != '\0')
+        ++i;
+}
+
+int my_getchar(){
+    int x;
+    
+    if((x = getchar()) == EOF)
+    {
+        if(ferror(stdin))
+        {
+            perror("error indicator is set");
+            exit(1);
+        }
+        if(feof(stdin))
+        {
+            perror("\nend-of-file indicator is set");
+        }
+        else
+        {
+            perror("getchar returned EOF when error indicator and end-of-file indicator ARE NOT SET");
+        }
+    }
+    
+    return x;
+}
