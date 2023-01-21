@@ -1,6 +1,7 @@
-19. Make and Makefile configuration file.
-We need the makefile to tell make what to do. Often a makefile tells make how to compile and link a program.
-Example Makefile:
+// 19. Make and Makefile configuration file.
+// We need the makefile to tell make what to do. Often a makefile tells make how to compile and link a program.
+// Example Makefile:
+/*
 cc=gcc
 cflags=-c -Wall
 
@@ -15,14 +16,8 @@ main.o: main.c
 clean:
     rm -rf *o main
 
-
-1.6
-#include <stdio.h>
-int main(){
-  printf("the value fo EOF is:", EOF);
-}
-
-1.7
+*/
+// 1.6
 #include<stdio.h>
 
 int main(int argc, char *argv[]) {
@@ -34,122 +29,114 @@ int main(int argc, char *argv[]) {
     }
 
     printf("\n%d\n", c != EOF);
-
 }
 
-1.8
-#include<stdio.h>
+// 1.7
+#include <stdio.h>
 
 int main(){
-	int blank, tab, newline;
-
-	blank == 0;
-	tab == 0;
-	newline == 0;
-
-	int c;
-
-	printf("input text\n");
-
-	for (; (c == getchar()) != EOF; ){
-		if (c == ' '){
-		++blank;
-		}
-
-		if (c == '\t'){
-		++tab;
-		}
-
-		if (c == '\n'){
-		++newline;
-		}
-	}
-	printf("blank=%d, tab=%d, newline=%d\n", blank,tab,newline);
+    printf("the value fo EOF is:", EOF);
 }
 
-1.9
+
+// 1.8
 #include<stdio.h>
 
-#define NONBLANK '-'
-
-int main(void)
+int main()
 {
-	int c, last;
+    int c, blanks, tabs, newlines;
 
-	last = NONBLANK;
+    blanks = 0;
+    tabs = 0;
+    newlines = 0;
 
-	while((c = getchar()) != EOF)
-	{
-		if(c == ' ')
-		{
-			if(last != ' ')
-			putchar(c);
-		}
-		else
-		putchar(c);
-		last=c;
-		}
-	return 0;
+    while ((c = getchar()) != EOF) {
+        if (c == ' ')
+            ++blanks;
+        if (c == '\t')
+            ++tabs;
+        if (c == '\n')
+            ++newlines;
+    }
+
+    printf("Blanks: %d\n", blanks);
+    printf("Tabs: %d\n", tabs);
+    printf("Newlines: %d\n", newlines);
 }
 
-1.10
+// 1.9
+#include <stdio.h>
+
+int main(){
+    char c;
+	  char prev_c; /* previous character */
+
+	  prev_c = 0;
+	  while ((c = getchar()) != EOF)
+		    if (c != ' ' || prev_c != ' ') { 
+			      putchar(c);
+			      prev_c = c;
+        }
+}
+
+// 1.10
 #include<stdio.h>
 
-int main(void)
-{
-  int c;
+int main(void){
+    int c;
 
-  while((c = getchar()) != EOF)
-  {
-    if(c == '\t')
+    while((c = getchar()) != EOF)
     {
-      putchar('\\');
-      putchar('t');
-    }
+        if(c == '\t')
+        {
+            putchar('\\');
+            putchar('t');
+        }
 
-    if(c == '\b')
-    {
-      putchar('\\');
-      putchar('b');
-    }
+        if(c == '\b')
+        {
+            putchar('\\');
+            putchar('b');
+        }
 
-    if(c == '\\')
-    {
-      putchar('\\');
-      putchar('\\');
-    }
+        if(c == '\\')
+        {
+            putchar('\\');
+            putchar('\\');
+        }
 
-    if(c != '\t' && c != '\b' && c != '\\')
-      putchar(c);
-  }
-  return 0;
+        if(c != '\t' && c != '\b' && c != '\\')
+            putchar(c);
+    }
+    return 0;
 }
 
-1.12
+// 1.12
+// Write a program that prints its input one word per line. 0
 
 #include <stdio.h>
 #include <stdlib.h>
 
 #define CTRL(x) (x & 0x1f)
 
-int main()
-{
-  int c;
+int main(){
+    int c;
 
-  while((c = getchar()) != EOF && c != CTRL('d') )
-  {
-    if(c == ' ' || c == '\t' || c == '\n' || c == '-')
+    while((c = getchar()) != EOF && c != CTRL('d') )
     {
-      putchar('\n');
+        if(c == ' ' || c == '\t' || c == '\n' || c == '-')
+        {
+            putchar('\n');
 
-      while((c = getchar()) == ' ' || c == '\t' || c == '\n' || c == '-' )
-      {
-        ; //do nothing // we could actually skip the braces and just enter ; after closing the while's condition brackets
-      }
+            while((c = getchar()) == ' ' || c == '\t' || c == '\n' || c == '-' )
+            {
+              ; //do nothing // we could actually skip the braces and just enter ; after closing the while's condition brackets
+            }
+        }
+        putchar(c);
     }
-    putchar(c);
-  }
 }
+
 
 int my_getchar()
 {
@@ -173,9 +160,9 @@ int my_getchar()
 	return c;
 }
 
-1.16 Revise the main routine of the longest-line program so it will
+/* 1.16 Revise the main routine of the longest-line program so it will
 correctly print the length of arbitrarily long input lines, and as much as possible
-of the text.
+of the text.*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -239,8 +226,6 @@ void copy(char to[], char from[]){
         ++i;
 }
 
-
-
 int my_getchar(char* longest, int max){
     int c,r; 
     
@@ -266,8 +251,8 @@ int my_getchar(char* longest, int max){
 }
 
 
-1.17 Exercise 1.17 -  Program to print the length of all input lines greater
- * than 80 characters.
+// 1.17 Exercise 1.17 -  Program to print the length of all input lines greater
+//  * than 80 characters.
 
 #include<stdio.h>
 
@@ -314,28 +299,28 @@ int ngetline(char s[], int lim)
 
 int my_getchar()
 {
-	int c; 
-	
-	if((c = getchar()) == EOF)
-	{	
-		if(ferror(stdin))
-		{
-			perror("Error indicator is set");
-			exit(1);
-		}
-		if(feof(stdin))
-		{
-			perror("End-of-file indicator is set");
-			exit(3);
-		}
-		perror("getchar returned EOF when error indicator and end-of-file indicator ARE NOT SET");
-		exit(2);
-	}
-	return c;
+    int c; 
+    
+    if((c = getchar()) == EOF)
+    {	
+        if(ferror(stdin))
+        {
+            perror("Error indicator is set");
+            exit(1);
+        }
+        if(feof(stdin))
+        {
+            perror("End-of-file indicator is set");
+            exit(3);
+        }
+        perror("getchar returned EOF when error indicator and end-of-file indicator ARE NOT SET");
+        exit(2);
+    }
+    return c;
 }
 
-1.18 - Write a Program to remove the trailing blanks and tabs
- from each input line and to delete entirely blank lines
+// 1.18 - Write a Program to remove the trailing blanks and tabs
+//  from each input line and to delete entirely blank lines
 
 
 #include<stdio.h>
@@ -363,11 +348,11 @@ int mgetline(char s[],int lim)
   int i,c;
 
   for(i=0;i<lim-1 && (c=getchar())!=EOF && c!='\n';++i)
-    s[i] = c;
+      s[i] = c;
   if( c == '\n')
   {
-    s[i]=c;
-    ++i;
+      s[i]=c;
+      ++i;
   }
   s[i]='\0';
   
@@ -389,10 +374,10 @@ int removetrail(char s[])
 
   if( i >= 0) /* Non Empty Line */
   {
-    ++i;
-    s[i] = '\n';
-    ++i;
-    s[i] = '\0';
+      ++i;
+      s[i] = '\n';
+      ++i;
+      s[i] = '\0';
   }
   return i;
 }
@@ -403,25 +388,23 @@ int my_getchar()
 	
 	if((c = getchar()) == EOF)
 	{	
-		if(ferror(stdin))
-		{
-			perror("Error indicator is set");
-			exit(1);
-		}
-		if(feof(stdin))
-		{
-			perror("End-of-file indicator is set");
-			exit(3);
-		}
-		perror("getchar returned EOF when error indicator and end-of-file indicator ARE NOT SET");
-		exit(2);
+      if(ferror(stdin))
+      {
+          perror("Error indicator is set");
+          exit(1);
+      }
+      if(feof(stdin))
+      {
+          perror("End-of-file indicator is set");
+          exit(3);
+      }
+      perror("getchar returned EOF when error indicator and end-of-file indicator ARE NOT SET");
+      exit(2);
 	}
 	return c;
 }
 
-1.19 - Write a function reverse that reverses the character string s; use it to write a program that reverses its input a line at a time.
- 
-
+// 1.19 - Write a function reverse that reverses the character string s; use it to write a program that reverses its input a line at a time.
 #include<stdio.h>
 #define MAXLINE 1000
 
@@ -446,42 +429,43 @@ int main(void)
 
 int mgetline(char s[],int lim)
 {
-  int i,c;
-  
-  for(i=0; i<lim-1 && (c=getchar()) != EOF && c != '\n'; ++i)
-    s[i] = c;
+    int i,c;
+    
+    for(i = 0; i < lim - 1 && (c = my_getchar()) != EOF && c != '\n'; ++i)
+        s[i] = c;
 
-  if( c == '\n')
-  {
-    s[i] = c;
-    ++i;
-  }
-  s[i] = '\0';
+    if( c == '\n')
+    {
+        s[i] = c;
+        ++i;
+    }
+    s[i] = '\0';
 
-  return i;
+    return i;
 }
 
 
 void reverse(char rline[])
 {
-  int i,j;
-  char temp;
+    int i,j;
+    char temp;
 
-  for(i=0;rline[i]!='\0';++i)
-    ;
-  --i;
-  if(rline[i]=='\n') --i;
-
-  j = 0;
-
-  while(j < i)
-  {
-    temp = rline[j];
-    rline[j] = rline[i];
-    rline[i] = temp;
+    for (i=0;rline[i]!='\0';++i)
+        ;
     --i;
-    ++j;
-  }
+    if (rline[i]=='\n')
+        --i;
+
+    j = 0;
+
+    while(j < i)
+    {
+        temp = rline[j];
+        rline[j] = rline[i];
+        rline[i] = temp;
+        --i;
+        ++j;
+    }
 }
 
 int my_getchar()
@@ -492,13 +476,13 @@ int my_getchar()
 	{	
 		if(ferror(stdin))
 		{
-			perror("Error indicator is set");
-			exit(1);
+		  	perror("Error indicator is set");
+		  	exit(1);
 		}
 		if(feof(stdin))
 		{
-			perror("End-of-file indicator is set");
-			exit(3);
+		  	perror("End-of-file indicator is set");
+		  	exit(3);
 		}
 		perror("getchar returned EOF when error indicator and end-of-file indicator ARE NOT SET");
 		exit(2);
@@ -507,7 +491,7 @@ int my_getchar()
 }
 
 
---> Input_Output task
+// --> Input_Output task
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -516,18 +500,15 @@ int my_getchar()
 int my_getchar();
 int my_putchar(int c);
 
-int main( )
+int main()
 {
-    int c;   
-    
-    
-    c=my_getchar();
+    int c;
+    c = my_getchar();
     
     while (c != EOF)
     {
         my_putchar(c);
-        c = my_getchar();       
-        
+        c = my_getchar();
     }
  
     return 0;
@@ -573,7 +554,7 @@ int my_putchar(int c)
     
 }
 
---> World_Counting
+// --> World_Counting
 
 #include <stdio.h>
 
@@ -581,11 +562,10 @@ int my_putchar(int c)
 #define OUT 0 /* outside a word */
 
 /* count lines, words, and characters in input */
-main()
-{
+int main(){
    int c, nl, nw, nc, state;
 
-   state = out;
+   state = OUT;
    nl = nw = nc = 0;
    while ((c = my_getchar()) != EOF) {
        ++nc;
@@ -621,7 +601,7 @@ int my_getchar()
     return c;
 }
 
---> Longest Line
+// --> Longest Line
 
 #include <stdio.h>
 
